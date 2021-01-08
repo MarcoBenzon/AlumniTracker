@@ -1,0 +1,75 @@
+package com.example.alumnitr;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Bundle;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class AdminJobsRecords extends AppCompatActivity {
+
+    private RecyclerView recyclerView;
+    private FirebaseFirestore jobsFstore;
+    private AdminJobAdapter adapter;
+    private List<JobsModel> list;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_admin_jobs_records);
+
+        recyclerView = findViewById(R.id.aJobsRecyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        jobsFstore = FirebaseFirestore.getInstance();
+        list = new ArrayList<>();
+        adapter = new AdminJobAdapter(this, list);
+        recyclerView.setAdapter(adapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(new AdminJobTouchHelper(adapter));
+        touchHelper.attachToRecyclerView(recyclerView);
+
+        jobShowData();
+
+    }
+
+    public void jobShowData(){
+
+        jobsFstore.collection("Jobs").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        list.clear();
+                        for (DocumentSnapshot snapshot : task.getResult()){
+
+                            JobsModel model = new JobsModel(snapshot.getString("id"),
+                                    snapshot.getString("JobName"),
+                                    snapshot.getString("Status"),
+                                    snapshot.getString("JobsDate"),
+                                    snapshot.getString("Content"));
+                            list.add(model);
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(AdminJobsRecords.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+}

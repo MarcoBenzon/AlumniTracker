@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.alumnitr">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="AlumniTracker"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AlumniTr"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".CV_View"></activity>
+        <activity android:name=".CurriculumV" />
+        <activity android:name=".AdminEventRecords" />
+        <activity android:name=".EventsActivity" />
+        <activity android:name=".AdminEvents" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".AdminListGraduates" />
+        <activity android:name=".ListGraduates" />
+        <activity android:name=".AdminJobsRecords" />
+        <activity android:name=".AdminAnnouncementRecords" />
+        <activity android:name=".AnnouncementActivity" />
+        <activity android:name=".AdminJobs" />
+        <activity android:name=".AdminAnnouncement" />
+        <activity android:name=".JobsActivity" />
+        <activity android:name=".EditProfile" />
+        <activity android:name=".Profile" />
+        <activity android:name=".Aboutus" />
+        <activity android:name=".Admin" />
+        <activity android:name=".Login">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".MainActivity" />
+    </application>
+
+</manifest>
